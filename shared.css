@@ -6,7 +6,7 @@
    text, matching the homepage's intro/outro "bookend" treatment.
    =================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
 
 :root{
   --ink: #101114;
@@ -218,4 +218,71 @@ h1,h2,h3{
   #icon-nav a.active{ background:#fff; color:var(--ink); border-color:transparent; }
   #icon-nav a svg{ width:13px; height:13px; }
   #icon-nav a .tooltip{ display:none; }
+}
+
+
+/* ---------- Mobile: fewer lines, matches the homepage's own reduction ---------- */
+@media (max-width: 720px){
+  #grid-lines-global span:nth-child(2),
+  #grid-lines-global span:nth-child(6){
+    display:none;
+  }
+}
+
+/* ---------- Circular numeral badge — doubles as the link into that
+   section. Diameter is exactly 2x the nav buttons (30px -> 60px).
+   Serif numeral contrasts against Big Shoulders Display headlines. ---------- */
+.badge-link{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Playfair Display', serif;
+  font-weight:700;
+  font-size:1.4rem;
+  color:#fff;
+  text-decoration:none;
+  flex-shrink:0;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.badge-link:hover,
+.badge-link:focus-visible{
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+/* ---------- Card grid (used on the Creative Endeavors page) ---------- */
+.card-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 1.75rem;
+  max-width: 640px;
+  margin-top: 2.5rem;
+  position:relative;
+  z-index:1;
+}
+.card{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.14);
+  padding: 1.75rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.card h3{
+  font-size:1.4rem;
+  margin:0;
+}
+.card p{
+  font-size:0.92rem;
+  line-height:1.5;
+  color:#B9B9B3;
+  margin:0;
+  flex-grow:1;
+}
+@media (max-width:600px){
+  .card-grid{ grid-template-columns: 1fr; }
 }

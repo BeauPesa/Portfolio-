@@ -6,7 +6,7 @@
 <title>Beau Pesa — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
 
   /* ===================================================================
@@ -25,7 +25,7 @@
     --liteload-tint:   #B9C6E4; /* TODO: replace with exact tint */
     --liteload-accent: #0B3AA0;
 
-    --walgreens-tint:   #36467A; /* updated: saturated */
+    --walgreens-tint:   #7D91CD; /* lightened so nav stays in light mode */
     --walgreens-accent: #4B3B6B;
     --walgreens-detail: #D2232A; /* sparing red accent — the "easter egg" cue */
 
@@ -178,11 +178,30 @@
     box-shadow: 0 30px 60px -20px rgba(0,0,0,0.25);
   }
   .case-index{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800;
-    font-size:1.1rem;
     margin-bottom:1rem;
-    display:inline-block;
+  }
+  /* Circular numeral badge — also the link into that case study's own
+     page. Diameter is exactly 2x the nav buttons (30px -> 60px). */
+  .badge-link{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.4rem;
+    color:#fff;
+    text-decoration:none;
+    flex-shrink:0;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+  .badge-link:hover,
+  .badge-link:focus-visible{
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
   }
   .case h2{
     font-size: clamp(2.25rem, 5vw, 3.5rem);
@@ -205,19 +224,19 @@
     margin:1.5rem 0 1.75rem;
   }
 
-  #liteload  .case-index, #liteload  .role{ color: var(--liteload-accent); }
+  #liteload  .role{ color: var(--liteload-accent); }
   #liteload  .thread{ background: var(--liteload-accent); }
 
-  #walgreens .case-index, #walgreens .role{ color: var(--walgreens-accent); }
+  #walgreens .role{ color: var(--walgreens-accent); }
   #walgreens .thread{ background: var(--walgreens-detail); } /* red thread, on purpose */
 
-  #ebay      .case-index, #ebay      .role{ color: var(--ebay-accent); }
+  #ebay      .role{ color: var(--ebay-accent); }
   #ebay      .thread{ background: var(--ebay-accent); }
 
-  #cisco     .case-index, #cisco     .role{ color: var(--cisco-accent); }
+  #cisco     .role{ color: var(--cisco-accent); }
   #cisco     .thread{ background: var(--cisco-accent); }
 
-  #urban     .case-index, #urban     .role{ color: var(--urban-accent); }
+  #urban     .role{ color: var(--urban-accent); }
   #urban     .thread{ background: var(--urban-accent); }
 
   /* ---------- Progress nav ---------- */
@@ -477,13 +496,13 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7"/><rect x="14" y="4" width="7" height="7"/><rect x="3" y="15" width="7" height="5"/><rect x="14" y="15" width="7" height="5"/></svg>
     <span class="tooltip tip-left">Process</span>
   </a>
-  <a href="art.html" aria-label="Art">
+  <a href="art.html" aria-label="Creative Endeavors">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
-    <span class="tooltip tip-left">Art</span>
+    <span class="tooltip tip-left">Creative Endeavors</span>
   </a>
-  <a href="about.html" aria-label="About">
+  <a href="about.html" aria-label="About / Contact">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-5.5A8.38 8.38 0 0 1 3 11.5 8.5 8.5 0 0 1 11.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>
-    <span class="tooltip tip-left">About</span>
+    <span class="tooltip tip-left">About / Contact</span>
   </a>
   <a href="resume.html" aria-label="Resume">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
@@ -540,7 +559,7 @@
 
 <section id="liteload" class="case">
     <div class="case-card">
-    <span class="case-index">01</span>
+    <a class="case-index badge-link" href="liteload.html" style="background:#0B3AA0" aria-label="View the liteload case study">01</a>
     <h2>LiteLoad</h2>
     <p class="role">Founder &amp; designer, in progress</p>
     <div class="thread"></div>
@@ -550,7 +569,7 @@
 
 <section id="walgreens" class="case">
     <div class="case-card">
-    <span class="case-index">02</span>
+    <a class="case-index badge-link" href="walgreens.html" style="background:#4B3B6B" aria-label="View the walgreens case study">02</a>
     <h2>Walgreens</h2>
     <p class="role">Self-checkout experience</p>
     <div class="thread"></div>
@@ -560,7 +579,7 @@
 
 <section id="ebay" class="case">
     <div class="case-card">
-    <span class="case-index">03</span>
+    <a class="case-index badge-link" href="ebay.html" style="background:#5C6B3F" aria-label="View the ebay case study">03</a>
     <h2>eBay</h2>
     <p class="role">Two-factor authentication</p>
     <div class="thread"></div>
@@ -570,7 +589,7 @@
 
 <section id="cisco" class="case">
     <div class="case-card">
-    <span class="case-index">04</span>
+    <a class="case-index badge-link" href="cisco.html" style="background:#049FD9" aria-label="View the cisco case study">04</a>
     <h2>Cisco Systems</h2>
     <p class="role">Network diagnostic tools</p>
     <div class="thread"></div>
@@ -580,7 +599,7 @@
 
 <section id="urban" class="case">
     <div class="case-card">
-    <span class="case-index">05</span>
+    <a class="case-index badge-link" href="urban.html" style="background:#2F4F44" aria-label="View the urban case study">05</a>
     <h2>Urban Design</h2>
     <p class="role">São Paulo watershed thesis</p>
     <div class="thread"></div>
@@ -607,7 +626,7 @@
   var sectionColors = {
     intro:     'rgb(16,17,20)',
     liteload:  'rgb(185,198,228)',
-    walgreens: 'rgb(54,70,122)',
+    walgreens: 'rgb(125,145,205)',
     ebay:      'rgb(140,210,143)',
     cisco:     'rgb(128,204,236)',
     urban:     'rgb(195,214,204)',
