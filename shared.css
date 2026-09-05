@@ -1,0 +1,221 @@
+/* ===================================================================
+   SHARED STYLESHEET
+   Used by every page except the homepage (which is self-contained
+   since its grid-lines/nav colors are scroll-driven and JS-managed).
+   These are simple static pages: dark background, lime accent, light
+   text, matching the homepage's intro/outro "bookend" treatment.
+   =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+:root{
+  --ink: #101114;
+  --text-light: #F2F1EC;
+  --accent-personal: #ADD944;
+  --nav-fg: #ffffff;
+  --nav-fg-soft: rgba(255,255,255,0.55);
+  --grid-line-fg: rgba(255,255,255,0.15);
+  --grid-inset: 4vw;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background: var(--ink);
+  color: var(--text-light);
+  font-family:'IBM Plex Sans', sans-serif;
+  position:relative;
+  overflow-x:hidden;
+}
+
+h1,h2,h3{
+  font-family:'Big Shoulders Display', sans-serif;
+  font-weight:800;
+  letter-spacing:0.01em;
+  line-height:0.95;
+  margin:0;
+}
+
+/* ---------- Decorative grid lines (static — these pages never
+   change background color, so no JS is needed to drive them) ---------- */
+#grid-lines-global{
+  position:absolute;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:space-between;
+  padding: 0 var(--grid-inset);
+  pointer-events:none;
+  z-index:0;
+}
+#grid-lines-global span{
+  width:0;
+  border-left:1px dashed var(--grid-line-fg);
+  height:100%;
+}
+
+/* ---------- Page hero content (matches the homepage's bookend style) ---------- */
+.page-hero{
+  position:relative;
+  z-index:1;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding: 6rem 8vw 6rem calc(var(--grid-inset) + calc((100vw - 2 * var(--grid-inset)) / 6));
+}
+.page-hero .eyebrow{
+  font-size:0.95rem;
+  color: var(--accent-personal);
+  margin:0 0 0.75rem;
+  font-weight:600;
+}
+.page-hero h1{
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin-bottom:1.25rem;
+}
+.page-hero p{
+  max-width:56ch;
+  font-size:1.05rem;
+  line-height:1.65;
+  color:#D4D4CE;
+  margin: 0 0 1.25rem;
+}
+.page-hero .cta{
+  display:inline-block;
+  margin-top:1.5rem;
+  padding:0.85rem 1.5rem;
+  border:1px solid var(--accent-personal);
+  background: var(--ink);
+  color: var(--accent-personal);
+  text-decoration:none;
+  font-weight:600;
+  font-size:0.95rem;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.page-hero .cta:hover,
+.page-hero .cta:focus-visible{
+  background: var(--accent-personal);
+  color: var(--ink);
+}
+
+@media (max-width: 720px){
+  .page-hero{
+    padding: 7rem 2.25rem 5.5rem;
+  }
+}
+
+/* ---------- Shared tooltip (rounded bubble, arrow pointing at its icon) ---------- */
+.tooltip{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  white-space:nowrap;
+  font-size:0.78rem;
+  font-family:'IBM Plex Sans', sans-serif;
+  color:#fff;
+  background:rgba(16,17,20,0.85);
+  padding:0.25rem 0.6rem;
+  border-radius:5px;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 0.2s var(--ease);
+}
+.tip-left{ left:40px; }
+.tip-left::after{
+  content:'';
+  position:absolute;
+  right:100%;
+  top:50%;
+  transform:translateY(-50%);
+  width:0; height:0;
+  border-style:solid;
+  border-width:6px 6px 6px 0;
+  border-color: transparent rgba(16,17,20,0.85) transparent transparent;
+}
+
+/* ---------- Site icon rail ---------- */
+#icon-nav{
+  position:fixed;
+  left: calc(var(--grid-inset) - 15px);
+  top: 2.5rem;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1.1rem;
+}
+#icon-nav a{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background: var(--ink);
+  border: 1.5px solid var(--nav-fg-soft);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--nav-fg);
+  text-decoration:none;
+  position:relative;
+  transition: transform 0.25s var(--ease), background-color 0.35s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+#icon-nav a::before{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius:50%;
+  background: transparent;
+  filter: blur(3px);
+  z-index:-1;
+  pointer-events:none;
+}
+#icon-nav a.active{
+  background: #fff;
+  border-color: transparent;
+  color: var(--ink);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+#icon-nav a:hover .tooltip,
+#icon-nav a:focus-visible .tooltip{
+  opacity:1;
+}
+#icon-nav a svg{
+  width:15px;
+  height:15px;
+}
+#icon-nav a:hover,
+#icon-nav a:focus-visible{
+  transform: scale(1.12);
+}
+#icon-nav a:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
+}
+
+@media (max-width: 720px){
+  #icon-nav{
+    position:fixed;
+    left:50%;
+    top:0.9rem;
+    transform:translateX(-50%);
+    flex-direction:row;
+    gap:0.6rem;
+    background: rgba(16,17,20,0.35);
+    padding:0.4rem 0.6rem;
+    border-radius:999px;
+    backdrop-filter: blur(6px);
+  }
+  #icon-nav a{ width:26px; height:26px; background:transparent; }
+  #icon-nav a::before{ display:none; }
+  #icon-nav a.active{ background:#fff; color:var(--ink); border-color:transparent; }
+  #icon-nav a svg{ width:13px; height:13px; }
+  #icon-nav a .tooltip{ display:none; }
+}
