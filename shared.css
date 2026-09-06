@@ -2,7 +2,7 @@
    SHARED STYLESHEET
    Used by every page except the homepage (which is self-contained
    since its grid-lines/nav colors are scroll-driven and JS-managed).
-   These are simple static pages: dark background, lime accent, light
+   These are simple static pages: dark background, brand-color accent, light
    text, matching the homepage's intro/outro "bookend" treatment.
    =================================================================== */
 
@@ -11,7 +11,7 @@
 :root{
   --ink: #101114;
   --text-light: #F2F1EC;
-  --accent-personal: #ADD944;
+  --accent-personal: #32A87B;
   --nav-fg: #ffffff;
   --nav-fg-soft: rgba(255,255,255,0.55);
   --grid-line-fg: rgba(255,255,255,0.15);
@@ -241,33 +241,38 @@ h1,h2,h3{
   height:60px;
   border-radius:50%;
   display:flex;
-  align-items:baseline;
+  align-items:center;
   justify-content:center;
   font-family:'Playfair Display', serif;
   font-weight:700;
   font-size:1.5rem;
-  color:#fff;
+  background: var(--badge-color);
+  color: var(--badge-text, #fff);
+  border: 1.5px solid transparent;
   text-decoration:none;
   flex-shrink:0;
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
 }
 .badge-link:hover,
 .badge-link:focus-visible{
+  background: var(--badge-text, #fff);
+  color: var(--badge-color);
+  border-color: var(--badge-color-30);
   transform: scale(1.08);
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
 .badge-link .no{
   font-size:0.5em;
   position:relative;
-  top:-0.55em;
+  top:-0.35em;
   margin-right:0.05em;
 }
 .badge-link .no::after{
   content:'';
   position:absolute;
   left:0; right:0;
-  bottom:-0.55em;
+  bottom:-0.18em;
   border-bottom:1px solid currentColor;
   opacity:0.85;
 }
