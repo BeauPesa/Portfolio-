@@ -20,23 +20,27 @@
     --paper: #F2F1EC;         /* card surface */
     --text-dark: #1B1C1E;
     --text-light: #F2F1EC;
-    --accent-personal: #32A87B; /* official brand color */
+    --accent-personal: #ADD944; /* signature lime — WCAG-friendly, nods to hi-vis warehouse gear */
 
-    --liteload-tint:   #B9C6E4; /* TODO: replace with exact tint */
-    --liteload-accent: #0B3AA0;
+    --liteload-tint:   #E4F5A1; /* lightest of the three swatches */
+    --liteload-accent: #ADD944; /* leftmost swatch */
+    --liteload-thread: #E4853C; /* rightmost swatch */
 
-    --walgreens-tint:   #7D91CD; /* lightened so nav stays in light mode */
-    --walgreens-accent: #4B3B6B;
+    --walgreens-tint:   #C2E8FF; /* lightest of the three swatches */
+    --walgreens-accent: #323264; /* leftmost swatch */
+    --walgreens-thread: #E62600; /* rightmost swatch */
     --walgreens-detail: #D2232A; /* sparing red accent — the "easter egg" cue */
 
-    --ebay-tint:   #8CD28F; /* updated: saturated */
-    --ebay-accent: #5C6B3F;
+    --ebay-tint:   #C2E8FF; /* lightest (same set as Walgreens — flagged, likely a copy/paste in source) */
+    --ebay-accent: #323264; /* leftmost (same set as Walgreens — flagged) */
+    --ebay-thread: #E62600; /* rightmost (same set as Walgreens — flagged) */
 
     --cisco-tint:   #80CCEC; /* updated: saturated */
     --cisco-accent: #049FD9;
 
-    --urban-tint:   #C3D6CC;
-    --urban-accent: #2F4F44;
+    --urban-tint:   #EFF7DA; /* light tint derived from the former lime accent */
+    --urban-accent: #ADD944; /* the former sitewide lime accent, now Urban's own */
+    --urban-thread: #2F4F44; /* kept from Urban's existing dark-green accent */
 
     --grid-inset: 4vw; /* distance of the outermost grid line from each edge */
     --grid-gap: calc((100vw - 2 * var(--grid-inset)) / 6); /* spacing between the 7 lines */
@@ -150,9 +154,12 @@
     color:#D4D4CE;
   }
   .bookend .cta{
-    display:inline-block;
+    display:inline-flex;
+    align-items:center;
+    height:48px;
     margin-top:2rem;
-    padding:0.85rem 1.5rem;
+    padding:0 1.5rem;
+    border-radius:999px;
     border:1px solid var(--accent-personal);
     background: var(--ink); /* bookends are always this fixed dark color, so a solid fill here fully hides the grid line behind it */
     color: var(--accent-personal);
@@ -162,9 +169,12 @@
     transition: background 0.25s var(--ease), color 0.25s var(--ease);
   }
   .case .cta{
-    display:inline-block;
+    display:inline-flex;
+    align-items:center;
+    height:48px;
     margin-top:2rem;
-    padding:0.85rem 1.5rem;
+    padding:0 1.5rem;
+    border-radius:999px;
     border:1px solid currentColor;
     background: transparent;
     text-decoration:none;
@@ -209,19 +219,20 @@
     text-decoration:none;
     flex-shrink:0;
     box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease), border-width 0.25s var(--ease);
   }
   .badge-link:hover,
   .badge-link:focus-visible{
     background: var(--badge-text, #fff);
     color: var(--badge-color);
+    border-width: 6px;
     border-color: var(--badge-color-30);
     transform: scale(1.08);
     box-shadow: 0 8px 20px rgba(0,0,0,0.35);
   }
   /* "No.1" convention: "No." sits smaller and lifted above the numeral's
-     own baseline, with a thin underline close beneath it. The whole
-     block still centers as a unit within the circle. */
+     own baseline, with a thin dashed underline landing right at that
+     baseline. The whole block still centers as a unit within the circle. */
   .badge-link .no{
     font-size:0.5em;
     position:relative;
@@ -232,8 +243,8 @@
     content:'';
     position:absolute;
     left:0; right:0;
-    bottom:-0.18em;
-    border-bottom:1px solid currentColor;
+    bottom:-0.85em;
+    border-bottom:1px dashed currentColor;
     opacity:0.85;
   }
   .badge-link .num{
@@ -258,32 +269,39 @@
     width:56px;
     height:4px;
     margin:1.5rem 0 1.75rem;
+    display:block;
+  }
+  .case .thread svg{
+    display:block;
+    width:100%;
+    height:100%;
+    overflow:visible;
   }
 
   #liteload  .role{ color: var(--liteload-accent); }
   #liteload  .cta{ border-color: var(--liteload-accent); color: var(--liteload-accent); }
   #liteload  .cta:hover, #liteload  .cta:focus-visible{ background: var(--liteload-accent); color: var(--paper); }
-  #liteload  .thread{ background: #C18D16; }
+  #liteload  .thread{ color: var(--liteload-thread); }
 
   #walgreens .role{ color: var(--walgreens-accent); }
   #walgreens .cta{ border-color: var(--walgreens-accent); color: var(--walgreens-accent); }
   #walgreens .cta:hover, #walgreens .cta:focus-visible{ background: var(--walgreens-accent); color: var(--paper); }
-  #walgreens .thread{ background: #C19615; }
+  #walgreens .thread{ color: var(--walgreens-thread); }
 
   #ebay      .role{ color: var(--ebay-accent); }
   #ebay      .cta{ border-color: var(--ebay-accent); color: var(--ebay-accent); }
   #ebay      .cta:hover, #ebay      .cta:focus-visible{ background: var(--ebay-accent); color: var(--paper); }
-  #ebay      .thread{ background: #BF17B8; }
+  #ebay      .thread{ color: var(--ebay-thread); }
 
   #cisco     .role{ color: var(--cisco-accent); }
   #cisco     .cta{ border-color: var(--cisco-accent); color: var(--cisco-accent); }
   #cisco     .cta:hover, #cisco     .cta:focus-visible{ background: var(--cisco-accent); color: var(--paper); }
-  #cisco     .thread{ background: #D63F00; }
+  #cisco     .thread{ color: #D63F00; }
 
   #urban     .role{ color: var(--urban-accent); }
   #urban     .cta{ border-color: var(--urban-accent); color: var(--urban-accent); }
   #urban     .cta:hover, #urban     .cta:focus-visible{ background: var(--urban-accent); color: var(--paper); }
-  #urban     .thread{ background: #8F476D; }
+  #urban     .thread{ color: var(--urban-thread); }
 
   /* ---------- Progress nav ---------- */
   #progress-nav{
@@ -605,11 +623,11 @@
 
 <section id="liteload" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#0B3AA0; --badge-color-30:rgba(11,58,160,0.3); --badge-text:#fff;" aria-label="View the liteload case study"><span class="no">No.</span><span class="num">1</span></a>
-    <div class="thread"></div>
+    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="no">No.</span><span class="num">1</span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>LiteLoad</h2>
     <p class="role">Founder &amp; designer, in progress</p>
-    <div class="thread"></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Warehouse loading sheets are generated straight out of legacy systems — dense, cluttered, hard to scan under fatigue. LiteLoad parses them into a clean, task-first interface built for the floor, not the back office.</p>
     <a class="cta" href="liteload.html">See the work →</a>
   </div>
@@ -617,11 +635,11 @@
 
 <section id="walgreens" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#4B3B6B; --badge-color-30:rgba(75,59,107,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="no">No.</span><span class="num">2</span></a>
-    <div class="thread"></div>
+    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="no">No.</span><span class="num">2</span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Walgreens</h2>
     <p class="role">Self-checkout experience</p>
-    <div class="thread"></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Shoppers wanted to skip the line. We designed a self-checkout flow that felt fast and obvious on first use — no instructions needed, no hesitation at the pay screen.</p>
     <a class="cta" href="walgreens.html">See the work →</a>
   </div>
@@ -629,11 +647,11 @@
 
 <section id="ebay" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#5C6B3F; --badge-color-30:rgba(92,107,63,0.3); --badge-text:#fff;" aria-label="View the ebay case study"><span class="no">No.</span><span class="num">3</span></a>
-    <div class="thread"></div>
+    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the ebay case study"><span class="no">No.</span><span class="num">3</span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>eBay</h2>
     <p class="role">Two-factor authentication</p>
-    <div class="thread"></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Security friction usually loses to convenience. This flow made two-factor verification fast enough that sellers stopped turning it off.</p>
     <a class="cta" href="ebay.html">See the work →</a>
   </div>
@@ -642,10 +660,10 @@
 <section id="cisco" class="case">
     <div class="case-card">
     <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="no">No.</span><span class="num">4</span></a>
-    <div class="thread"></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Cisco Systems</h2>
     <p class="role">Network diagnostic tools</p>
-    <div class="thread"></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Support engineers were reading raw network data under time pressure. We redesigned the diagnostic interface around the questions they actually needed answered first.</p>
     <a class="cta" href="cisco.html">See the work →</a>
   </div>
@@ -653,11 +671,11 @@
 
 <section id="urban" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="urban.html" style="--badge-color:#2F4F44; --badge-color-30:rgba(47,79,68,0.3); --badge-text:#fff;" aria-label="View the urban case study"><span class="no">No.</span><span class="num">5</span></a>
-    <div class="thread"></div>
+    <a class="case-index badge-link" href="urban.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the urban case study"><span class="no">No.</span><span class="num">5</span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Urban Design</h2>
     <p class="role">São Paulo watershed thesis</p>
-    <div class="thread"></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Before software, the same instinct: a thesis proposing constructed wetlands to filter urban runoff before it reached a contaminated creek in eastern São Paulo — systems thinking applied to water instead of software.</p>
     <a class="cta" href="urban.html">See the work →</a>
   </div>
@@ -681,11 +699,11 @@
   // of the viewport, matching the Figma mockup's hard-cut behavior.
   var sectionColors = {
     intro:     'rgb(16,17,20)',
-    liteload:  'rgb(185,198,228)',
-    walgreens: 'rgb(125,145,205)',
-    ebay:      'rgb(140,210,143)',
+    liteload:  'rgb(228,245,161)',
+    walgreens: 'rgb(194,232,255)',
+    ebay:      'rgb(194,232,255)',
     cisco:     'rgb(128,204,236)',
-    urban:     'rgb(195,214,204)',
+    urban:     'rgb(239,247,218)',
     outro:     'rgb(16,17,20)'
   };
 

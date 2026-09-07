@@ -11,7 +11,7 @@
 :root{
   --ink: #101114;
   --text-light: #F2F1EC;
-  --accent-personal: #32A87B;
+  --accent-personal: #ADD944;
   --nav-fg: #ffffff;
   --nav-fg-soft: rgba(255,255,255,0.55);
   --grid-line-fg: rgba(255,255,255,0.15);
@@ -91,9 +91,12 @@ h1,h2,h3{
   margin: 0 0 1.25rem;
 }
 .page-hero .cta{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  height:48px;
   margin-top:1.5rem;
-  padding:0.85rem 1.5rem;
+  padding:0 1.5rem;
+  border-radius:999px;
   border:1px solid var(--accent-personal);
   background: var(--ink);
   color: var(--accent-personal);
@@ -252,12 +255,13 @@ h1,h2,h3{
   text-decoration:none;
   flex-shrink:0;
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease), border-width 0.25s var(--ease);
 }
 .badge-link:hover,
 .badge-link:focus-visible{
   background: var(--badge-text, #fff);
   color: var(--badge-color);
+  border-width: 6px;
   border-color: var(--badge-color-30);
   transform: scale(1.08);
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
@@ -272,8 +276,8 @@ h1,h2,h3{
   content:'';
   position:absolute;
   left:0; right:0;
-  bottom:-0.18em;
-  border-bottom:1px solid currentColor;
+  bottom:-0.85em;
+  border-bottom:1px dashed currentColor;
   opacity:0.85;
 }
 .badge-link .num{
