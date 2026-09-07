@@ -38,8 +38,8 @@
     --cisco-tint:   #80CCEC; /* updated: saturated */
     --cisco-accent: #049FD9;
 
-    --urban-tint:   #EFF7DA; /* light tint derived from the former lime accent */
-    --urban-accent: #ADD944; /* the former sitewide lime accent, now Urban's own */
+    --urban-tint:   #D6EEE5; /* light tint derived from the new teal accent */
+    --urban-accent: #32A87B; /* official brand teal, Urban's own now */
     --urban-thread: #2F4F44; /* kept from Urban's existing dark-green accent */
 
     --grid-inset: 4vw; /* distance of the outermost grid line from each edge */
@@ -230,20 +230,23 @@
     transform: scale(1.08);
     box-shadow: 0 8px 20px rgba(0,0,0,0.35);
   }
-  /* "No.1" convention: "No." sits smaller and lifted above the numeral's
-     own baseline, with a thin dashed underline landing right at that
-     baseline. The whole block still centers as a unit within the circle. */
+  /* "No.1" convention: an inner wrapper top-aligns "No." with the
+     numeral (so their cap-heights line up), while the outer circle
+     still centers that whole block vertically within itself. */
+  .badge-link .badge-inner{
+    display:flex;
+    align-items:flex-start;
+  }
   .badge-link .no{
     font-size:0.5em;
     position:relative;
-    top:-0.35em;
     margin-right:0.05em;
   }
   .badge-link .no::after{
     content:'';
     position:absolute;
     left:0; right:0;
-    bottom:-0.85em;
+    bottom:-1em;
     border-bottom:1px dashed currentColor;
     opacity:0.85;
   }
@@ -623,11 +626,11 @@
 
 <section id="liteload" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="no">No.</span><span class="num">1</span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="badge-inner"><span class="no">No.</span><span class="num">1</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>LiteLoad</h2>
     <p class="role">Founder &amp; designer, in progress</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Warehouse loading sheets are generated straight out of legacy systems — dense, cluttered, hard to scan under fatigue. LiteLoad parses them into a clean, task-first interface built for the floor, not the back office.</p>
     <a class="cta" href="liteload.html">See the work →</a>
   </div>
@@ -635,11 +638,11 @@
 
 <section id="walgreens" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="no">No.</span><span class="num">2</span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="badge-inner"><span class="no">No.</span><span class="num">2</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Walgreens</h2>
     <p class="role">Self-checkout experience</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Shoppers wanted to skip the line. We designed a self-checkout flow that felt fast and obvious on first use — no instructions needed, no hesitation at the pay screen.</p>
     <a class="cta" href="walgreens.html">See the work →</a>
   </div>
@@ -647,11 +650,11 @@
 
 <section id="ebay" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the ebay case study"><span class="no">No.</span><span class="num">3</span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the ebay case study"><span class="badge-inner"><span class="no">No.</span><span class="num">3</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>eBay</h2>
     <p class="role">Two-factor authentication</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Security friction usually loses to convenience. This flow made two-factor verification fast enough that sellers stopped turning it off.</p>
     <a class="cta" href="ebay.html">See the work →</a>
   </div>
@@ -659,11 +662,11 @@
 
 <section id="cisco" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="no">No.</span><span class="num">4</span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="badge-inner"><span class="no">No.</span><span class="num">4</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Cisco Systems</h2>
     <p class="role">Network diagnostic tools</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Support engineers were reading raw network data under time pressure. We redesigned the diagnostic interface around the questions they actually needed answered first.</p>
     <a class="cta" href="cisco.html">See the work →</a>
   </div>
@@ -671,11 +674,11 @@
 
 <section id="urban" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="urban.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the urban case study"><span class="no">No.</span><span class="num">5</span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <a class="case-index badge-link" href="urban.html" style="--badge-color:#32A87B; --badge-color-30:rgba(50,168,123,0.3); --badge-text:#fff;" aria-label="View the urban case study"><span class="badge-inner"><span class="no">No.</span><span class="num">5</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Urban Design</h2>
     <p class="role">São Paulo watershed thesis</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <p>Before software, the same instinct: a thesis proposing constructed wetlands to filter urban runoff before it reached a contaminated creek in eastern São Paulo — systems thinking applied to water instead of software.</p>
     <a class="cta" href="urban.html">See the work →</a>
   </div>
@@ -703,7 +706,7 @@
     walgreens: 'rgb(194,232,255)',
     ebay:      'rgb(194,232,255)',
     cisco:     'rgb(128,204,236)',
-    urban:     'rgb(239,247,218)',
+    urban:     'rgb(214,238,229)',
     outro:     'rgb(16,17,20)'
   };
 
