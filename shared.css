@@ -57,6 +57,12 @@ h1,h2,h3{
   padding: 0 var(--grid-inset);
   pointer-events:none;
   z-index:0;
+  /* Fade lines in a patch behind the text column — full pages have
+     no opaque card to block them, so without this the lines would
+     run distractingly through the copy. Harmless on the case-study
+     pages too, since their opaque card already blocks lines there. */
+  mask-image: radial-gradient(ellipse 34vw 46vh at 27% 50%, transparent 0%, transparent 45%, black 82%, black 100%);
+  -webkit-mask-image: radial-gradient(ellipse 34vw 46vh at 27% 50%, transparent 0%, transparent 45%, black 82%, black 100%);
 }
 #grid-lines-global span{
   width:0;
@@ -93,7 +99,7 @@ h1,h2,h3{
 .page-hero .cta{
   display:inline-flex;
   align-items:center;
-  height:48px;
+  height:30px;
   margin-top:1.5rem;
   padding:0 1.5rem;
   border-radius:999px;
