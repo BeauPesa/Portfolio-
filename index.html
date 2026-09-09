@@ -156,7 +156,7 @@
   .bookend .cta{
     display:inline-flex;
     align-items:center;
-    height:30px;
+    height:35px;
     margin-top:2rem;
     padding:0 1.5rem;
     border-radius:999px;
@@ -171,7 +171,7 @@
   .case .cta{
     display:inline-flex;
     align-items:center;
-    height:30px;
+    height:35px;
     margin-top:2rem;
     padding:0 1.5rem;
     border-radius:999px;
@@ -242,16 +242,17 @@
     position:relative;
     margin-right:0.05em;
   }
-  .badge-link .no::after{
-    content:'';
+  .badge-link .no-underline{
     position:absolute;
     left:0; right:0;
-    bottom:-1em;
-    border-bottom:1px dashed currentColor;
-    opacity:0.85;
+    bottom:-0.3em;
+    width:100%;
+    height:4px;
+    overflow:visible;
   }
   .badge-link .num{
     font-size:1em;
+    font-variant-numeric: lining-nums;
   }
   .case h2{
     font-size: clamp(2.25rem, 5vw, 3.5rem);
@@ -281,9 +282,9 @@
     overflow:visible;
   }
 
-  #liteload  .role{ color: var(--liteload-accent); }
-  #liteload  .cta{ border-color: var(--liteload-accent); color: var(--liteload-accent); }
-  #liteload  .cta:hover, #liteload  .cta:focus-visible{ background: var(--liteload-accent); color: var(--paper); }
+  #liteload  .role{ color: #4D4D4D; }
+  #liteload  .cta{ border-color: #4D4D4D; color: #4D4D4D; }
+  #liteload  .cta:hover, #liteload  .cta:focus-visible{ background: var(--liteload-accent); color: var(--ink); }
   #liteload  .thread{ color: var(--liteload-thread); }
 
   #walgreens .role{ color: var(--walgreens-accent); }
@@ -626,7 +627,7 @@
 
 <section id="liteload" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="badge-inner"><span class="no">No.</span><span class="num">1</span></span></a>
+    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="num">1</span></span></a>
     <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>LiteLoad</h2>
     <p class="role">Founder &amp; designer, in progress</p>
@@ -638,7 +639,7 @@
 
 <section id="walgreens" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="badge-inner"><span class="no">No.</span><span class="num">2</span></span></a>
+    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="num">2</span></span></a>
     <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Walgreens</h2>
     <p class="role">Self-checkout experience</p>
@@ -650,7 +651,7 @@
 
 <section id="ebay" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the ebay case study"><span class="badge-inner"><span class="no">No.</span><span class="num">3</span></span></a>
+    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the ebay case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="num">3</span></span></a>
     <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>eBay</h2>
     <p class="role">Two-factor authentication</p>
@@ -662,7 +663,7 @@
 
 <section id="cisco" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="badge-inner"><span class="no">No.</span><span class="num">4</span></span></a>
+    <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="num">4</span></span></a>
     <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Cisco Systems</h2>
     <p class="role">Network diagnostic tools</p>
@@ -674,7 +675,7 @@
 
 <section id="urban" class="case">
     <div class="case-card">
-    <a class="case-index badge-link" href="urban.html" style="--badge-color:#32A87B; --badge-color-30:rgba(50,168,123,0.3); --badge-text:#fff;" aria-label="View the urban case study"><span class="badge-inner"><span class="no">No.</span><span class="num">5</span></span></a>
+    <a class="case-index badge-link" href="urban.html" style="--badge-color:#32A87B; --badge-color-30:rgba(50,168,123,0.3); --badge-text:#fff;" aria-label="View the urban case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="num">5</span></span></a>
     <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
     <h2>Urban Design</h2>
     <p class="role">São Paulo watershed thesis</p>

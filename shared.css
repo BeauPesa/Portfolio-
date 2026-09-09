@@ -99,7 +99,7 @@ h1,h2,h3{
 .page-hero .cta{
   display:inline-flex;
   align-items:center;
-  height:30px;
+  height:35px;
   margin-top:1.5rem;
   padding:0 1.5rem;
   border-radius:999px;
@@ -281,16 +281,17 @@ h1,h2,h3{
   position:relative;
   margin-right:0.05em;
 }
-.badge-link .no::after{
-  content:'';
+.badge-link .no-underline{
   position:absolute;
   left:0; right:0;
-  bottom:-1em;
-  border-bottom:1px dashed currentColor;
-  opacity:0.85;
+  bottom:-0.3em;
+  width:100%;
+  height:4px;
+  overflow:visible;
 }
 .badge-link .num{
   font-size:1em;
+  font-variant-numeric: lining-nums;
 }
 
 /* ---------- Card grid (used on the Creative Endeavors page) ---------- */
