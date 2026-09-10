@@ -290,7 +290,7 @@ h1,h2,h3{
   overflow:visible;
 }
 .badge-link .num{
-  font-size:1em;
+  font-size:calc(1em + 2pt);
   font-variant-numeric: lining-nums;
 }
 
