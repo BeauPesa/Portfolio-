@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beau Pesa — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+
+  /* ===================================================================
+     DESIGN TOKENS
+     Section colors below are placeholders derived from the palette
+     directions discussed in chat. Swap the hex values marked TODO
+     for your exact Figma / brand hex codes.
+     =================================================================== */
+  :root{
+    --ink: #101114;           /* intro / outro base */
+    --paper: #F2F1EC;         /* card surface */
+    --text-dark: #1B1C1E;
+    --text-light: #F2F1EC;
+    --accent-personal: #ADD944; /* signature lime — WCAG-friendly, nods to hi-vis warehouse gear */
+
+    --liteload-tint:   #E4F5A1; /* lightest of the three swatches */
+    --liteload-accent: #ADD944; /* leftmost swatch */
+    --liteload-thread: #E4853C; /* rightmost swatch */
+
+    --walgreens-tint:   #C2E8FF; /* lightest of the three swatches */
+    --walgreens-accent: #323264; /* leftmost swatch */
+    --walgreens-thread: #E62600; /* rightmost swatch */
+    --walgreens-detail: #D2232A; /* sparing red accent — the "easter egg" cue */
+
+    --ebay-tint:   #FDF4A9;
+    --ebay-accent: #FEBC32;
+    --ebay-thread: #94C634;
+
+    --cisco-tint:   #80CCEC; /* updated: saturated */
+    --cisco-accent: #049FD9;
+
+    --urban-tint:   #D6EEE5; /* light tint derived from the new teal accent */
+    --urban-accent: #32A87B; /* official brand teal, Urban's own now */
+    --urban-thread: #2F4F44; /* kept from Urban's existing dark-green accent */
+
+    --grid-inset: 4vw; /* distance of the outermost grid line from each edge */
+    --grid-gap: calc((100vw - 2 * var(--grid-inset)) / 6); /* spacing between the 7 lines */
+    --mobile-grid-gap: calc((100vw - 2 * var(--grid-inset)) / 4); /* spacing once 2 lines are hidden on mobile */
+    --ease: cubic-bezier(.22,.61,.36,1);
+
+    /* Nav foreground — flips per active section so borders/icons/lines
+       always have contrast against whatever's currently behind them. */
+    --nav-fg: #ffffff;
+    --nav-fg-soft: rgba(255,255,255,0.55);
+    --nav-line-soft: rgba(255,255,255,0.5);
+    --grid-line-fg: rgba(255,255,255,0.15); /* decorative grid lines — decoupled from nav border opacity */
+  }
+
+  html[data-theme="light"]{
+    --nav-fg: #101114;
+    --nav-fg-soft: rgba(16,17,20,0.5);
+    --nav-line-soft: rgba(16,17,20,0.35);
+    --grid-line-fg: rgba(16,17,20,0.1);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  body{
+    margin:0;
+    font-family:'IBM Plex Sans', sans-serif;
+    color: var(--text-dark);
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    letter-spacing:0.01em;
+    line-height:0.95;
+    margin:0;
+  }
+
+  /* Fixed layer that receives the interpolated background color */
+  #bg-layer{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:var(--ink);
+    /* Hard cut, not a scroll-linked blend: each section owns a flat color,
+       and this short transition just takes the jump-cut edge off. */
+    transition: background-color 0.35s var(--ease);
+  }
+
+  section{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding: 6rem 8vw 6rem calc(var(--grid-inset) + var(--grid-gap));
+    position:relative;
+  }
+
+  /* Decorative grid reveal — ONE continuous set of dashed verticals
+     spanning the whole page (sized in JS to match total scroll
+     height), not per-section copies. This fixes two problems the
+     per-section version had: dash-phase resetting at every section
+     boundary (looked like a "cut"), and line color hard-switching
+     at the seam. mix-blend-mode makes the line auto-contrast against
+     whatever's behind it — dark on light sections, light on dark —
+     without hand-coding a color per template. */
+  #grid-lines-global{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    padding: 0 var(--grid-inset);
+    pointer-events:none;
+    z-index:0;
+  }
+  #grid-lines-global span{
+    width:0;
+    border-left:1px dashed var(--grid-line-fg);
+    height:100%;
+    transition: border-color 0.35s var(--ease); /* matches the bg-layer's own transition timing */
+  }
+  section > *{
+    position:relative;
+    z-index:1;
+  }
+
+
+  /* ---------- Bookend sections (intro / outro) ---------- */
+  .bookend{
+    color: var(--text-light);
+  }
+  .bookend .eyebrow{
+    font-size:0.95rem;
+    color: var(--accent-personal);
+    margin:0 0 0.75rem;
+    font-weight:600;
+  }
+  .bookend h1{
+    font-size: clamp(3rem, 9vw, 7rem);
+    margin-bottom:1.25rem;
+  }
+  .bookend p{
+    max-width:34ch;
+    font-size:1.05rem;
+    line-height:1.6;
+    color:#D4D4CE;
+  }
+  .bookend .cta{
+    display:inline-flex;
+    align-items:center;
+    height:35px;
+    margin-top:2rem;
+    padding:0 1.5rem;
+    border-radius:999px;
+    border:1px solid var(--accent-personal);
+    background: var(--ink); /* bookends are always this fixed dark color, so a solid fill here fully hides the grid line behind it */
+    color: var(--accent-personal);
+    text-decoration:none;
+    font-weight:600;
+    font-size:0.95rem;
+    transition: background 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .case .cta{
+    display:inline-flex;
+    align-items:center;
+    height:35px;
+    margin-top:2rem;
+    padding:0 1.5rem;
+    border-radius:999px;
+    border:1px solid currentColor;
+    background: transparent;
+    text-decoration:none;
+    font-weight:600;
+    font-size:0.95rem;
+    transition: background 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .bookend .cta:hover,
+  .bookend .cta:focus-visible{
+    background: var(--accent-personal);
+    color: var(--ink);
+  }
+
+  /* ---------- Case study sections ---------- */
+  .case{
+    justify-content:flex-start;
+  }
+  .case-card{
+    background: var(--paper);
+    max-width: 640px;
+    padding: 3rem;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.25);
+  }
+  .case-index{
+    margin-bottom:1rem;
+  }
+  /* Circular numeral badge — also the link into that case study's own
+     page. Diameter is exactly 2x the nav buttons (30px -> 60px). */
+  .badge-link{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.5rem;
+    background: var(--badge-color);
+    color: var(--badge-text, #fff);
+    border: 1.5px solid transparent;
+    text-decoration:none;
+    flex-shrink:0;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease), border-width 0.25s var(--ease);
+  }
+  .badge-link:hover,
+  .badge-link:focus-visible{
+    background: var(--badge-text, #fff);
+    color: var(--badge-color);
+    border-width: 6px;
+    border-color: var(--badge-color-30);
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  }
+  /* "No.1" convention: an inner wrapper top-aligns "No." with the
+     numeral (so their cap-heights line up), while the outer circle
+     still centers that whole block vertically within itself. */
+  .badge-link .badge-inner{
+    display:flex;
+    align-items:flex-start;
+  }
+  .badge-link .no{
+    font-size:0.5em;
+    position:relative;
+    margin-right:0.05em;
+  }
+  .badge-link .no-underline{
+    position:absolute;
+    left:0; right:0;
+    bottom:-0.3em;
+    width:100%;
+    height:4px;
+    overflow:visible;
+  }
+  .badge-link .num{
+    font-size:calc(1em + 2pt);
+    font-variant-numeric: lining-nums;
+  }
+  .case h2{
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    margin-bottom:0.5rem;
+  }
+  .case .role{
+    font-size:1rem;
+    font-weight:500;
+    margin-bottom:1.5rem;
+    opacity:0.75;
+  }
+  .case p{
+    font-size:1.02rem;
+    line-height:1.65;
+    max-width:52ch;
+  }
+  .case .thread{
+    width:56px;
+    height:4px;
+    margin:1.5rem 0 1.75rem;
+    display:block;
+  }
+  .case .thread svg{
+    display:block;
+    width:100%;
+    height:100%;
+    overflow:visible;
+  }
+
+  #liteload  .role{ color: #4D4D4D; }
+  #liteload  .cta{ border-color: #4D4D4D; color: #4D4D4D; }
+  #liteload  .cta:hover, #liteload  .cta:focus-visible{ background: var(--liteload-accent); color: var(--ink); }
+  #liteload  .thread{ color: var(--liteload-thread); }
+
+  #walgreens .role{ color: var(--walgreens-accent); }
+  #walgreens .cta{ border-color: var(--walgreens-accent); color: var(--walgreens-accent); }
+  #walgreens .cta:hover, #walgreens .cta:focus-visible{ background: var(--walgreens-accent); color: var(--paper); }
+  #walgreens .thread{ color: var(--walgreens-thread); }
+
+  #ebay      .role{ color: var(--ebay-accent); }
+  #ebay      .cta{ border-color: var(--ebay-accent); color: var(--ebay-accent); }
+  #ebay      .cta:hover, #ebay      .cta:focus-visible{ background: var(--ebay-accent); color: var(--paper); }
+  #ebay      .thread{ color: var(--ebay-thread); }
+
+  #cisco     .role{ color: var(--cisco-accent); }
+  #cisco     .cta{ border-color: var(--cisco-accent); color: var(--cisco-accent); }
+  #cisco     .cta:hover, #cisco     .cta:focus-visible{ background: var(--cisco-accent); color: var(--paper); }
+  #cisco     .thread{ color: #D63F00; }
+
+  #urban     .role{ color: var(--urban-accent); }
+  #urban     .cta{ border-color: var(--urban-accent); color: var(--urban-accent); }
+  #urban     .cta:hover, #urban     .cta:focus-visible{ background: var(--urban-accent); color: var(--paper); }
+  #urban     .thread{ color: var(--urban-thread); }
+
+  /* ---------- Progress nav ---------- */
+  #progress-nav{
+    position:fixed;
+    right: calc(var(--grid-inset) - 15px);
+    top:50%;
+    transform: translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.1rem;
+    z-index:10;
+  }
+  #progress-nav button{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:1.5px solid var(--nav-fg-soft);
+    background: var(--ink); /* JS overrides this to match whatever's behind it */
+    padding:0;
+    cursor:pointer;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--nav-fg);
+    transition: transform 0.25s var(--ease), background-color 0.35s var(--ease), border-color 0.25s var(--ease);
+  }
+  #progress-nav button svg{
+    position:absolute;
+    inset:0;
+    margin:auto;
+    width:13px;
+    height:13px;
+    transition: transform 1.4s var(--ease), opacity 0.4s var(--ease);
+  }
+  /* Chevrons point away from the current position — up for sections
+     above it, down for sections below — reinforcing where you are
+     in the sequence, not just marking it with a dot. */
+  #progress-nav button[data-dir="up"] svg.chevron-icon{ transform: rotate(0deg); opacity:0.85; }
+  #progress-nav button[data-dir="down"] svg.chevron-icon{ transform: rotate(180deg); opacity:0.85; }
+  #progress-nav button[data-dir="current"] svg.chevron-icon{ opacity:0; transform: rotate(90deg); }
+  /* Eye icon only shows on the active ("you are here") dot, always
+     dark since that dot is always solid white regardless of theme. */
+  #progress-nav button svg.eye-icon{ opacity:0; color: var(--ink); }
+  #progress-nav button.active svg.eye-icon{ opacity:1; }
+  /* Soft blurred halo, same color as the dot, feathers the dashed
+     line into invisibility instead of hard-clipping a dash right at
+     the circle's edge (which looks like a cut, not a clean stop).
+     Skipped on the active dot — its fill is solid opaque white, so
+     it already fully occludes the line with no help needed, and the
+     colored halo was competing visually with the drop shadow. */
+  #progress-nav button::before{
+    content:'';
+    position:absolute;
+    inset:-8px;
+    border-radius:50%;
+    background: var(--halo-color, transparent);
+    filter: blur(7px);
+    z-index:-1;
+    pointer-events:none;
+  }
+  #progress-nav button.active::before{
+    display:none;
+  }
+  #progress-nav button:hover .tooltip,
+  #progress-nav button:focus-visible .tooltip{
+    opacity:1;
+  }
+  #progress-nav button.active{
+    background: rgb(255,255,255);
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transform:scale(1.15);
+  }
+  #progress-nav button:focus-visible{
+    outline:2px solid #fff;
+    outline-offset:3px;
+  }
+
+  /* Shared tooltip: a small rounded label with a triangular tip
+     pointing at whichever icon it belongs to. tip-right is used by
+     the progress dots (tooltip sits to their left, arrow points
+     right at the dot); tip-left is used by the icon rail (tooltip
+     sits to their right, arrow points left at the icon). */
+  .tooltip{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    white-space:nowrap;
+    font-size:0.78rem;
+    font-family:'IBM Plex Sans', sans-serif;
+    color:#fff;
+    background:rgba(16,17,20,0.85);
+    padding:0.25rem 0.6rem;
+    border-radius:5px;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.2s var(--ease);
+  }
+  .tip-right{ right:40px; }
+  .tip-right::after{
+    content:'';
+    position:absolute;
+    left:100%;
+    top:50%;
+    transform:translateY(-50%);
+    width:0; height:0;
+    border-style:solid;
+    border-width:6px 0 6px 6px;
+    border-color: transparent transparent transparent rgba(16,17,20,0.85);
+  }
+  .tip-left{ left:40px; }
+  .tip-left::after{
+    content:'';
+    position:absolute;
+    right:100%;
+    top:50%;
+    transform:translateY(-50%);
+    width:0; height:0;
+    border-style:solid;
+    border-width:6px 6px 6px 0;
+    border-color: transparent rgba(16,17,20,0.85) transparent transparent;
+  }
+
+  /* ---------- Site icon rail ---------- */
+  #icon-nav{
+    position:fixed;
+    left: calc(var(--grid-inset) - 15px);
+    top: 2.5rem;
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.1rem;
+  }
+  #icon-nav a{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background: var(--ink); /* JS overrides this to match whatever's behind it, like the progress dots */
+    border: 1.5px solid var(--nav-fg-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--nav-fg);
+    text-decoration:none;
+    position:relative;
+    transition: transform 0.25s var(--ease), background-color 0.35s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  #icon-nav a::before{
+    content:'';
+    position:absolute;
+    inset:-3px;
+    border-radius:50%;
+    background: var(--halo-color, transparent);
+    filter: blur(3px);
+    z-index:-1;
+    pointer-events:none;
+  }
+  #icon-nav a.active{
+    background: #fff;
+    border-color: transparent;
+    color: var(--ink);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  #icon-nav a:hover .tooltip,
+  #icon-nav a:focus-visible .tooltip{
+    opacity:1;
+  }
+  #icon-nav a svg{
+    width:15px;
+    height:15px;
+  }
+  #icon-nav a:hover,
+  #icon-nav a:focus-visible{
+    transform: scale(1.12);
+  }
+  #icon-nav a:focus-visible{
+    outline:2px solid #fff;
+    outline-offset:3px;
+  }
+
+  @media (max-width: 720px){
+    section{
+      padding-top: 5.5rem;
+      padding-bottom: 5.5rem;
+      padding-left: calc(var(--grid-inset) + var(--mobile-grid-gap)); /* second visible line */
+      padding-right: calc(100vw - var(--grid-inset) - (3.5 * var(--mobile-grid-gap))); /* halfway through the last column */
+    }
+    .bookend p{ max-width:none; }
+    .case p{ max-width:none; }
+    .bookend > div{ width:100%; min-width:0; }
+    .case-card{ padding:1.5rem; max-width:100%; }
+
+    /* Fewer lines on mobile — same grid, less clutter. Keeps both
+       outer edges and the center; drops the 2nd and 6th. */
+    #grid-lines-global span:nth-child(2),
+    #grid-lines-global span:nth-child(6){
+      display:none;
+    }
+
+    /* Progress dots become a horizontal bar pinned to the bottom. */
+    #progress-nav{
+      position:fixed;
+      top:auto;
+      right:auto;
+      bottom:0.9rem;
+      left:50%;
+      transform:translateX(-50%);
+      flex-direction:row;
+      gap:0.65rem;
+      background: rgba(16,17,20,0.35);
+      padding:0.5rem 0.75rem;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    #progress-nav button{ width:9px; height:9px; border-width:1px; }
+    #progress-nav button svg{ display:none; }
+    #progress-nav button::before{ display:none; }
+    #progress-nav button.active{ border-width:1.5px; }
+    #progress-nav button .tooltip{ display:none; }
+
+    /* Site icon rail becomes a matching horizontal bar pinned to the top. */
+    #icon-nav{
+      position:fixed;
+      left:50%;
+      top:0.9rem;
+      transform:translateX(-50%);
+      flex-direction:row;
+      gap:0.6rem;
+      background: rgba(16,17,20,0.35);
+      padding:0.4rem 0.6rem;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    #icon-nav a{ width:26px; height:26px; background:transparent; }
+    #icon-nav a::before{ display:none; }
+    #icon-nav a.active{ background:#fff; color:var(--ink); border-color:transparent; }
+    #icon-nav a svg{ width:13px; height:13px; }
+    #icon-nav a .tooltip{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-layer"></div>
+<div id="grid-lines-global" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<nav id="icon-nav" aria-label="Site pages">
+  <a href="index.html" aria-label="Home" class="active" aria-current="page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+    <span class="tooltip tip-left">Home</span>
+  </a>
+  <a href="process.html" aria-label="Process">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7"/><rect x="14" y="4" width="7" height="7"/><rect x="3" y="15" width="7" height="5"/><rect x="14" y="15" width="7" height="5"/></svg>
+    <span class="tooltip tip-left">Process</span>
+  </a>
+  <a href="art.html" aria-label="Creative Endeavors">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
+    <span class="tooltip tip-left">Creative Endeavors</span>
+  </a>
+  <a href="about.html" aria-label="About / Contact">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-5.5A8.38 8.38 0 0 1 3 11.5 8.5 8.5 0 0 1 11.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>
+    <span class="tooltip tip-left">About / Contact</span>
+  </a>
+  <a href="resume.html" aria-label="Resume">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+    <span class="tooltip tip-left">Resume</span>
+  </a>
+</nav>
+
+<nav id="progress-nav" aria-label="Section progress">
+  <button data-target="intro"      class="active">
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">Hi</span>
+  </button>
+  <button data-target="liteload"  >
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">LiteLoad</span>
+  </button>
+  <button data-target="walgreens" >
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">Walgreens</span>
+  </button>
+  <button data-target="ebay"      >
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">eBay</span>
+  </button>
+  <button data-target="cisco"     >
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">Cisco Systems</span>
+  </button>
+  <button data-target="urban"     >
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">Urban Design</span>
+  </button>
+  <button data-target="outro"     >
+    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="tooltip tip-right">Bye</span>
+  </button>
+</nav>
+
+<section id="intro" class="bookend" data-color="var(--ink)">
+    <div>
+    <p class="eyebrow">Hi, it's me</p>
+    <h1>I'm Beau.</h1>
+    <p>A design engineer who's spent a decade solving friction wherever it shows up — retail checkout lines, enterprise dashboards, warehouse floors, even a polluted creek in São Paulo. Same problem, different medium.</p>
+    <a class="cta" href="#liteload">See the work ↓</a>
+  </div>
+</section>
+
+<section id="liteload" class="case">
+    <div class="case-card">
+    <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">1</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <h2>LiteLoad</h2>
+    <p class="role">Founder &amp; designer, in progress</p>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <p>Warehouse loading sheets are generated straight out of legacy systems — dense, cluttered, hard to scan under fatigue. LiteLoad parses them into a clean, task-first interface built for the floor, not the back office.</p>
+    <a class="cta" href="liteload.html">See the work →</a>
+  </div>
+</section>
+
+<section id="walgreens" class="case">
+    <div class="case-card">
+    <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">2</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <h2>Walgreens</h2>
+    <p class="role">Self-checkout experience</p>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <p>Shoppers wanted to skip the line. We designed a self-checkout flow that felt fast and obvious on first use — no instructions needed, no hesitation at the pay screen.</p>
+    <a class="cta" href="walgreens.html">See the work →</a>
+  </div>
+</section>
+
+<section id="ebay" class="case">
+    <div class="case-card">
+    <a class="case-index badge-link" href="ebay.html" style="--badge-color:#FEBC32; --badge-color-30:rgba(254,188,50,0.3); --badge-text:var(--ink);" aria-label="View the ebay case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">3</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <h2>eBay</h2>
+    <p class="role">Two-factor authentication</p>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <p>Security friction usually loses to convenience. This flow made two-factor verification fast enough that sellers stopped turning it off.</p>
+    <a class="cta" href="ebay.html">See the work →</a>
+  </div>
+</section>
+
+<section id="cisco" class="case">
+    <div class="case-card">
+    <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">4</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <h2>Cisco Systems</h2>
+    <p class="role">Network diagnostic tools</p>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <p>Support engineers were reading raw network data under time pressure. We redesigned the diagnostic interface around the questions they actually needed answered first.</p>
+    <a class="cta" href="cisco.html">See the work →</a>
+  </div>
+</section>
+
+<section id="urban" class="case">
+    <div class="case-card">
+    <a class="case-index badge-link" href="urban.html" style="--badge-color:#32A87B; --badge-color-30:rgba(50,168,123,0.3); --badge-text:#fff;" aria-label="View the urban case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">5</span></span></a>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <h2>Urban Design</h2>
+    <p class="role">São Paulo watershed thesis</p>
+    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <p>Before software, the same instinct: a thesis proposing constructed wetlands to filter urban runoff before it reached a contaminated creek in eastern São Paulo — systems thinking applied to water instead of software.</p>
+    <a class="cta" href="urban.html">See the work →</a>
+  </div>
+</section>
+
+<section id="outro" class="bookend">
+    <div>
+    <p class="eyebrow">Bye, for now</p>
+    <h1>Let's talk.</h1>
+    <p>Warehouse, watershed, or checkout line — if there's friction, I'm probably already thinking about how to remove it.</p>
+    <a class="cta" href="mailto:hello@beaupesa.com">Get in touch</a>
+  </div>
+</section>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Each section owns one flat color. No blending between them —
+  // the background snaps when a section takes over the majority
+  // of the viewport, matching the Figma mockup's hard-cut behavior.
+  var sectionColors = {
+    intro:     'rgb(16,17,20)',
+    liteload:  'rgb(228,245,161)',
+    walgreens: 'rgb(194,232,255)',
+    ebay:      'rgb(253,244,169)',
+    cisco:     'rgb(128,204,236)',
+    urban:     'rgb(214,238,229)',
+    outro:     'rgb(16,17,20)'
+  };
+
+  var bgLayer = document.getElementById('bg-layer');
+  var gridLinesGlobal = document.getElementById('grid-lines-global');
+
+  function sizeGridLines(){
+    gridLinesGlobal.style.height = document.documentElement.scrollHeight + 'px';
+  }
+  sizeGridLines();
+  window.addEventListener('resize', sizeGridLines);
+  window.addEventListener('load', sizeGridLines);
+  // Big Shoulders Display swapping in after the initial paint can
+  // change heading heights slightly; re-measure once fonts settle.
+  if (document.fonts && document.fonts.ready){
+    document.fonts.ready.then(sizeGridLines);
+  }
+  setTimeout(sizeGridLines, 500);
+  var navButtons = Array.prototype.slice.call(document.querySelectorAll('#progress-nav button'));
+
+  navButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.dataset.target);
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  var iconLinks = Array.prototype.slice.call(document.querySelectorAll('#icon-nav a'));
+
+  // Theme (dark/light) is computed from each color's actual brightness,
+  // not a hardcoded "bookends are dark" assumption — so it stays correct
+  // even as section colors get tuned (e.g. a case study going darker).
+  function isDarkColor(rgbString){
+    var m = rgbString.match(/\d+/g).map(Number);
+    var luminance = 0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2];
+    return luminance < 140;
+  }
+
+  // Nav fills are ~10% lighter than the true background color, so they
+  // stand out slightly instead of camouflaging perfectly invisible.
+  // The halo (which softens the grid line) still uses the true color,
+  // since ITS job is to blend in, not stand out.
+  function lighten(rgbString, amount){
+    var m = rgbString.match(/\d+/g).map(Number);
+    var r = Math.round(m[0] + (255 - m[0]) * amount);
+    var g = Math.round(m[1] + (255 - m[1]) * amount);
+    var b = Math.round(m[2] + (255 - m[2]) * amount);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+
+  function setActive(id){
+    var color = sectionColors[id];
+    var fillColor = lighten(color, 0.10);
+    bgLayer.style.backgroundColor = color;
+    document.documentElement.dataset.theme = isDarkColor(color) ? 'dark' : 'light';
+    var activeIndex = navButtons.findIndex(function(btn){ return btn.dataset.target === id; });
+    navButtons.forEach(function(btn, i){
+      var isActive = i === activeIndex;
+      btn.style.backgroundColor = isActive ? '' : fillColor;
+      btn.style.setProperty('--halo-color', color);
+      btn.classList.toggle('active', isActive);
+      btn.dataset.dir = i < activeIndex ? 'up' : (i > activeIndex ? 'down' : 'current');
+    });
+    var isDesktop = window.innerWidth > 720;
+    iconLinks.forEach(function(a){
+      if (a.classList.contains('active')) return;
+      a.style.backgroundColor = isDesktop ? fillColor : '';
+      a.style.setProperty('--halo-color', isDesktop ? color : 'transparent');
+    });
+  }
+
+  var observer = new IntersectionObserver(function(entries){
+    // Among sections currently crossing the threshold, pick whichever
+    // has the largest share of the viewport right now.
+    var winner = null;
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        if (!winner || entry.intersectionRatio > winner.intersectionRatio){
+          winner = entry;
+        }
+      }
+    });
+    if (winner) setActive(winner.target.id);
+  }, { threshold: [0.5] });
+
+  Object.keys(sectionColors).forEach(function(id){
+    observer.observe(document.getElementById(id));
+  });
+
+  setActive('intro');
+})();
+</script>
+
+</body>
+</html>
