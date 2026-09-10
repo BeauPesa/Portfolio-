@@ -90,7 +90,7 @@ h1,h2,h3{
   margin-bottom:1.25rem;
 }
 .page-hero p{
-  max-width:56ch;
+  max-width:34ch;
   font-size:1.05rem;
   line-height:1.65;
   color:#D4D4CE;
@@ -124,6 +124,7 @@ h1,h2,h3{
     padding-left: calc(var(--grid-inset) + var(--mobile-grid-gap));
     padding-right: 1.5rem;
   }
+  .page-hero p{ max-width:none; }
 }
 
 /* ---------- Shared tooltip (rounded bubble, arrow pointing at its icon) ---------- */
