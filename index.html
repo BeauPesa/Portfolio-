@@ -432,6 +432,16 @@
   }
 
   /* ---------- Site icon rail ---------- */
+  #social-nav{
+    position:fixed;
+    left: calc(var(--grid-inset) - 15px);
+    bottom: 2.5rem;
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.1rem;
+  }
   #icon-nav{
     position:fixed;
     left: calc(var(--grid-inset) - 15px);
@@ -442,7 +452,8 @@
     align-items:center;
     gap:1.1rem;
   }
-  #icon-nav a{
+  #icon-nav a,
+  #social-nav a{
     width:30px;
     height:30px;
     border-radius:50%;
@@ -456,7 +467,8 @@
     position:relative;
     transition: transform 0.25s var(--ease), background-color 0.35s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
   }
-  #icon-nav a::before{
+  #icon-nav a::before,
+  #social-nav a::before{
     content:'';
     position:absolute;
     inset:-3px;
@@ -466,25 +478,32 @@
     z-index:-1;
     pointer-events:none;
   }
-  #icon-nav a.active{
+  #icon-nav a.active,
+  #social-nav a.active{
     background: #fff;
     border-color: transparent;
     color: var(--ink);
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   }
   #icon-nav a:hover .tooltip,
-  #icon-nav a:focus-visible .tooltip{
+  #icon-nav a:focus-visible .tooltip,
+  #social-nav a:hover .tooltip,
+  #social-nav a:focus-visible .tooltip{
     opacity:1;
   }
-  #icon-nav a svg{
+  #icon-nav a svg,
+  #social-nav a svg{
     width:15px;
     height:15px;
   }
   #icon-nav a:hover,
-  #icon-nav a:focus-visible{
+  #icon-nav a:focus-visible,
+  #social-nav a:hover,
+  #social-nav a:focus-visible{
     transform: scale(1.12);
   }
-  #icon-nav a:focus-visible{
+  #icon-nav a:focus-visible,
+  #social-nav a:focus-visible{
     outline:2px solid #fff;
     outline-offset:3px;
   }
@@ -542,7 +561,24 @@
       border-radius:999px;
       backdrop-filter: blur(6px);
     }
-    #icon-nav a{ width:26px; height:26px; background:transparent; }
+    #social-nav{
+      position:fixed;
+      left:50%;
+      bottom:3.4rem;
+      top:auto;
+      transform:translateX(-50%);
+      flex-direction:row;
+      gap:0.6rem;
+      background: rgba(16,17,20,0.35);
+      padding:0.4rem 0.6rem;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    #icon-nav a,
+    #social-nav a{ width:26px; height:26px; background:transparent; }
+    #social-nav a::before{ display:none; }
+    #social-nav a svg{ width:13px; height:13px; }
+    #social-nav a .tooltip{ display:none; }
     #icon-nav a::before{ display:none; }
     #icon-nav a.active{ background:#fff; color:var(--ink); border-color:transparent; }
     #icon-nav a svg{ width:13px; height:13px; }
@@ -554,6 +590,21 @@
 
 <div id="bg-layer"></div>
 <div id="grid-lines-global" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<nav id="social-nav" aria-label="Social links">
+  <a href="https://www.linkedin.com/in/beaupesa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    <span class="tooltip tip-left">LinkedIn</span>
+  </a>
+  <a href="https://github.com/BeauPesa" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+    <span class="tooltip tip-left">GitHub</span>
+  </a>
+  <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    <span class="tooltip tip-left">Instagram</span>
+  </a>
+</nav>
 
 <nav id="icon-nav" aria-label="Site pages">
   <a href="index.html" aria-label="Home" class="active" aria-current="page">
@@ -735,7 +786,7 @@
     });
   });
 
-  var iconLinks = Array.prototype.slice.call(document.querySelectorAll('#icon-nav a'));
+  var iconLinks = Array.prototype.slice.call(document.querySelectorAll('#icon-nav a, #social-nav a'));
 
   // Theme (dark/light) is computed from each color's actual brightness,
   // not a hardcoded "bookends are dark" assumption — so it stays correct
