@@ -44,6 +44,8 @@
 
     --grid-inset: 4vw; /* distance of the outermost grid line from each edge */
     --grid-gap: calc((100vw - 2 * var(--grid-inset)) / 6); /* spacing between the 7 lines */
+    --card-left: calc(var(--grid-inset) + 0.5 * var(--grid-gap)); /* midpoint between line 1 and 2 */
+    --card-right: calc(var(--grid-inset) + 3.5 * var(--grid-gap)); /* midpoint between line 4 and 5 */
     --mobile-grid-gap: calc((100vw - 2 * var(--grid-inset)) / 4); /* spacing once 2 lines are hidden on mobile */
     --ease: cubic-bezier(.22,.61,.36,1);
 
@@ -156,6 +158,8 @@
   .bookend .cta{
     display:inline-flex;
     align-items:center;
+    justify-content:center;
+    width:220px;
     height:35px;
     margin-top:2rem;
     padding:0 1.5rem;
@@ -171,6 +175,8 @@
   .case .cta{
     display:inline-flex;
     align-items:center;
+    justify-content:center;
+    width:220px;
     height:35px;
     margin-top:2rem;
     padding:0 1.5rem;
@@ -191,10 +197,12 @@
   /* ---------- Case study sections ---------- */
   .case{
     justify-content:flex-start;
+    padding-left: var(--card-left);
   }
   .case-card{
     background: var(--paper);
-    max-width: 640px;
+    width: calc(var(--card-right) - var(--card-left));
+    max-width: none;
     padding: 3rem;
     box-shadow: 0 30px 60px -20px rgba(0,0,0,0.25);
   }
@@ -270,8 +278,8 @@
     max-width:52ch;
   }
   .case .thread{
-    width:56px;
-    height:4px;
+    width:90px;
+    height:6px;
     margin:1.5rem 0 1.75rem;
     display:block;
   }
@@ -432,6 +440,16 @@
   }
 
   /* ---------- Site icon rail ---------- */
+  #social-nav{
+    position:fixed;
+    left: calc(var(--grid-inset) - 15px);
+    bottom: 2.5rem;
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.1rem;
+  }
   #icon-nav{
     position:fixed;
     left: calc(var(--grid-inset) - 15px);
@@ -442,7 +460,8 @@
     align-items:center;
     gap:1.1rem;
   }
-  #icon-nav a{
+  #icon-nav a,
+  #social-nav a{
     width:30px;
     height:30px;
     border-radius:50%;
@@ -456,7 +475,8 @@
     position:relative;
     transition: transform 0.25s var(--ease), background-color 0.35s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
   }
-  #icon-nav a::before{
+  #icon-nav a::before,
+  #social-nav a::before{
     content:'';
     position:absolute;
     inset:-3px;
@@ -466,25 +486,32 @@
     z-index:-1;
     pointer-events:none;
   }
-  #icon-nav a.active{
+  #icon-nav a.active,
+  #social-nav a.active{
     background: #fff;
     border-color: transparent;
     color: var(--ink);
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   }
   #icon-nav a:hover .tooltip,
-  #icon-nav a:focus-visible .tooltip{
+  #icon-nav a:focus-visible .tooltip,
+  #social-nav a:hover .tooltip,
+  #social-nav a:focus-visible .tooltip{
     opacity:1;
   }
-  #icon-nav a svg{
+  #icon-nav a svg,
+  #social-nav a svg{
     width:15px;
     height:15px;
   }
   #icon-nav a:hover,
-  #icon-nav a:focus-visible{
+  #icon-nav a:focus-visible,
+  #social-nav a:hover,
+  #social-nav a:focus-visible{
     transform: scale(1.12);
   }
-  #icon-nav a:focus-visible{
+  #icon-nav a:focus-visible,
+  #social-nav a:focus-visible{
     outline:2px solid #fff;
     outline-offset:3px;
   }
@@ -499,7 +526,9 @@
     .bookend p{ max-width:none; }
     .case p{ max-width:none; }
     .bookend > div{ width:100%; min-width:0; }
-    .case-card{ padding:1.5rem; max-width:100%; }
+    .case{ padding-left: calc(var(--grid-inset) + 0.5 * var(--mobile-grid-gap)); }
+    .case-card{ padding:1.5rem; width:100%; max-width:100%; }
+    .bookend .cta, .case .cta{ width:188px; }
 
     /* Fewer lines on mobile — same grid, less clutter. Keeps both
        outer edges and the center; drops the 2nd and 6th. */
@@ -542,7 +571,24 @@
       border-radius:999px;
       backdrop-filter: blur(6px);
     }
-    #icon-nav a{ width:26px; height:26px; background:transparent; }
+    #social-nav{
+      position:fixed;
+      left:50%;
+      bottom:3.4rem;
+      top:auto;
+      transform:translateX(-50%);
+      flex-direction:row;
+      gap:0.6rem;
+      background: rgba(16,17,20,0.35);
+      padding:0.4rem 0.6rem;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    #icon-nav a,
+    #social-nav a{ width:26px; height:26px; background:transparent; }
+    #social-nav a::before{ display:none; }
+    #social-nav a svg{ width:13px; height:13px; }
+    #social-nav a .tooltip{ display:none; }
     #icon-nav a::before{ display:none; }
     #icon-nav a.active{ background:#fff; color:var(--ink); border-color:transparent; }
     #icon-nav a svg{ width:13px; height:13px; }
@@ -555,14 +601,33 @@
 <div id="bg-layer"></div>
 <div id="grid-lines-global" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
+<nav id="social-nav" aria-label="Social links">
+  <a href="https://www.linkedin.com/in/beaupesa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    <span class="tooltip tip-left">LinkedIn</span>
+  </a>
+  <a href="https://github.com/BeauPesa" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+    <span class="tooltip tip-left">GitHub</span>
+  </a>
+  <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    <span class="tooltip tip-left">Instagram</span>
+  </a>
+</nav>
+
 <nav id="icon-nav" aria-label="Site pages">
   <a href="index.html" aria-label="Home" class="active" aria-current="page">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
     <span class="tooltip tip-left">Home</span>
   </a>
-  <a href="process.html" aria-label="Process">
+  <a href="resume.html" aria-label="Resume">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+    <span class="tooltip tip-left">Resume</span>
+  </a>
+  <a href="process.html" aria-label="Other Projects">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7"/><rect x="14" y="4" width="7" height="7"/><rect x="3" y="15" width="7" height="5"/><rect x="14" y="15" width="7" height="5"/></svg>
-    <span class="tooltip tip-left">Process</span>
+    <span class="tooltip tip-left">Other Projects</span>
   </a>
   <a href="art.html" aria-label="Creative Endeavors">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>
@@ -571,10 +636,6 @@
   <a href="about.html" aria-label="About / Contact">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-5.5A8.38 8.38 0 0 1 3 11.5 8.5 8.5 0 0 1 11.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>
     <span class="tooltip tip-left">About / Contact</span>
-  </a>
-  <a href="resume.html" aria-label="Resume">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
-    <span class="tooltip tip-left">Resume</span>
   </a>
 </nav>
 
@@ -628,10 +689,10 @@
 <section id="liteload" class="case">
     <div class="case-card">
     <a class="case-index badge-link" href="liteload.html" style="--badge-color:#ADD944; --badge-color-30:rgba(173,217,68,0.3); --badge-text:var(--ink);" aria-label="View the liteload case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">1</span></span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <h2>LiteLoad</h2>
     <p class="role">Founder &amp; designer, in progress</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <p>Warehouse loading sheets are generated straight out of legacy systems — dense, cluttered, hard to scan under fatigue. LiteLoad parses them into a clean, task-first interface built for the floor, not the back office.</p>
     <a class="cta" href="liteload.html">See the work →</a>
   </div>
@@ -640,10 +701,10 @@
 <section id="walgreens" class="case">
     <div class="case-card">
     <a class="case-index badge-link" href="walgreens.html" style="--badge-color:#323264; --badge-color-30:rgba(50,50,100,0.3); --badge-text:#fff;" aria-label="View the walgreens case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">2</span></span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <h2>Walgreens</h2>
     <p class="role">Self-checkout experience</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <p>Shoppers wanted to skip the line. We designed a self-checkout flow that felt fast and obvious on first use — no instructions needed, no hesitation at the pay screen.</p>
     <a class="cta" href="walgreens.html">See the work →</a>
   </div>
@@ -652,10 +713,10 @@
 <section id="ebay" class="case">
     <div class="case-card">
     <a class="case-index badge-link" href="ebay.html" style="--badge-color:#FEBC32; --badge-color-30:rgba(254,188,50,0.3); --badge-text:var(--ink);" aria-label="View the ebay case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">3</span></span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <h2>eBay</h2>
     <p class="role">Two-factor authentication</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <p>Security friction usually loses to convenience. This flow made two-factor verification fast enough that sellers stopped turning it off.</p>
     <a class="cta" href="ebay.html">See the work →</a>
   </div>
@@ -664,10 +725,10 @@
 <section id="cisco" class="case">
     <div class="case-card">
     <a class="case-index badge-link" href="cisco.html" style="--badge-color:#049FD9; --badge-color-30:rgba(4,159,217,0.3); --badge-text:#fff;" aria-label="View the cisco case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">4</span></span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <h2>Cisco Systems</h2>
     <p class="role">Network diagnostic tools</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <p>Support engineers were reading raw network data under time pressure. We redesigned the diagnostic interface around the questions they actually needed answered first.</p>
     <a class="cta" href="cisco.html">See the work →</a>
   </div>
@@ -676,10 +737,10 @@
 <section id="urban" class="case">
     <div class="case-card">
     <a class="case-index badge-link" href="urban.html" style="--badge-color:#32A87B; --badge-color-30:rgba(50,168,123,0.3); --badge-text:#fff;" aria-label="View the urban case study"><span class="badge-inner"><span class="no">No.<svg class="no-underline" viewBox="0 0 18 4" preserveAspectRatio="none" aria-hidden="true"><line x1="1" y1="2" x2="4" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="7" y1="2" x2="10" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="14" y1="2" x2="17" y2="2" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></span><span class="num">5</span></span></a>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <h2>Urban Design</h2>
     <p class="role">São Paulo watershed thesis</p>
-    <div class="thread"><svg viewBox="0 0 56 4" width="56" height="4" aria-hidden="true"><line x1="3" y1="2" x2="53" y2="2" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="6,4"/></svg></div>
+    <div class="thread"><svg viewBox="0 0 90 6" width="90" height="6" aria-hidden="true"><line x1="3" y1="3" x2="87" y2="3" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="12,4,4,4,4,4,4,4,4,4,12,4,12,4,4"/></svg></div>
     <p>Before software, the same instinct: a thesis proposing constructed wetlands to filter urban runoff before it reached a contaminated creek in eastern São Paulo — systems thinking applied to water instead of software.</p>
     <a class="cta" href="urban.html">See the work →</a>
   </div>
@@ -735,7 +796,7 @@
     });
   });
 
-  var iconLinks = Array.prototype.slice.call(document.querySelectorAll('#icon-nav a'));
+  var iconLinks = Array.prototype.slice.call(document.querySelectorAll('#icon-nav a, #social-nav a'));
 
   // Theme (dark/light) is computed from each color's actual brightness,
   // not a hardcoded "bookends are dark" assumption — so it stays correct
